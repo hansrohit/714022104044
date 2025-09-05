@@ -3,7 +3,7 @@ const { nanoid } = require("nanoid");
 
 exports.createShortUrl = async (req, res) => {
   try {
-    const { originalUrl, expiryTime, keyword } = req.body;
+    const { originalUrl, keyword, expiryTime } = req.body;
 
     if (!originalUrl || !expiryTime) {
       return res
@@ -43,7 +43,9 @@ exports.createShortUrl = async (req, res) => {
 
     await url.save();
 
-    res.json({ shortUrl: `${req.protocol}://${req.get("host")}/${shortCode}` });
+    res.json({
+      shortUrl: `${req.protocol}://${req.get("host")}/api/${shortCode}`,
+    });
   } catch (err) {
     console.error(err);
     res.status(500).json({ message: "Server error" });
